@@ -1,0 +1,42 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Action": [
+				"rds:Describe*",
+				"rds:ListTagsForResource",
+				"rds:AddTagsToResource",
+				"rds:StartDBCluster",
+				"rds:StopDBCluster",
+				"rds:StopDBInstance",
+				"rds:StartDBInstance"
+			],
+			"Resource": "*",
+			"Effect": "Allow"
+		},
+		{
+			"Action": [
+				"rds:StopDBInstance"
+			],
+			"Effect": "Deny",
+			"Resource": "*",
+			"Condition": {
+				"StringEqualsIgnoreCase": {
+					"rds:db-tag/uptime": "24x7"
+				}
+			}
+		},
+		{
+			"Action": [
+				"rds:StopDBCluster"
+			],
+			"Effect": "Deny",
+			"Resource": "*",
+			"Condition": {
+				"StringEqualsIgnoreCase": {
+					"rds:cluster-tag/uptime": "24x7"
+				}
+			}
+		}
+	]
+}
