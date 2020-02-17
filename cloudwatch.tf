@@ -59,6 +59,10 @@ resource "aws_cloudwatch_log_metric_filter" "lambda_python_error" {
     name      = "lambda-rds-uptime_python-error"
     value     = "1"
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.rds_uptime,
+  ]
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_python_error" {
