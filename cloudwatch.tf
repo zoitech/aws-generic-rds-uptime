@@ -18,8 +18,7 @@ resource "aws_cloudwatch_log_group" "rds_uptime" {
   name = local.rds_uptime_log_group
 
   tags = {
-    creation   = "terraform"
-    department = "zoi"
+    creation = "terraform"
   }
 }
 
