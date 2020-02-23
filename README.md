@@ -102,18 +102,21 @@ Based on the default configuration mentioned above, the following values would b
 14x6
 ```
 
+### Monitoring and Alerts
+
+Three cloudwatch alarms are created which monitor if the uptime lambda is executing regularly, is executing without errors and checking no python errors are generated. If a cloudwatch alarm goes into alarm status, an alert is sent to an SNS topic. Depending on who or which group email is subscribed to the SNS topic, they will receive any alarm notifications via email.
+
+Currently it is no possible to automatically subscribe emails to an SNS topic via terraform, so subscriptions must be made manually. Please refer to [The issue topic here](https://github.com/pulumi/pulumi/issues/1660)
+
 ### To reference a tagged version
 
 Please refer to [CHANGELOG.md](CHANGELOG.md) for the latest release.
 
 ```hcl
-module "iam_saml" {
-  source = "git::https://github.com/zoitech/terraform-aws-rds-uptime.git?ref=1.0.0"  
+module "rds_uptime" {
+  source = "git::https://git.zoi.de/terraform-library/aws-generic-rds-uptime.git?ref=1.0.0"  
 }
 ```
 
 ## Authors
-Module managed by [Zoi](https://github.com/zoitech).
-
-## License
-MIT License. See LICENSE for full details.
+Module managed by Graham and Emerson.
