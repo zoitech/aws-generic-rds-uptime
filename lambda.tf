@@ -22,5 +22,7 @@ resource "aws_lambda_function" "uptime" {
     variables = local.env_variables
   }
 
+  tags = var.lambda_tags
+
   depends_on = [data.archive_file.function]
 }

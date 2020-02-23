@@ -65,3 +65,23 @@ variable "env_mode_variable" {
 }
 
 
+# Tags
+variable "cwma_tags" {
+  description = "Tags for the cloud watch metric alarms"
+  type        = map(string)
+  default = {
+    test = "test"
+  }
+}
+
+variable "lambda_tags" {
+  description = "Tags for the lambda function"
+  type        = map(string)
+  default     = {}
+}
+
+variable "sns_tags" {
+  description = "Tags for the SNS topic"
+  type        = map(string)
+  default     = {}
+}
