@@ -33,18 +33,41 @@ resource "aws_cloudwatch_metric_alarm" "lambda_execution_error" {
   metric_name         = "Errors"
 
   period              = "60"
-  statistic           = "Average"
+  statistic           = "Sum"
   threshold           = "0"
   datapoints_to_alarm = 1
 
-  # dimensions = {
-  #   LogGroupName = 
-  #   DestinationType =
-  #   FilterName =
-  # }
+  dimensions = {
+    FunctionName = var.function_name
+  }
 
-  alarm_description = "Lambda RDS uptime error"
+  alarm_description = "Monitors if ${var.function_name} failed to execute"
   alarm_actions     = [aws_sns_topic.rds_uptime.arn]
+
+  tags = var.cwma_tags
+}
+
+## General lambda invocation error
+resource "aws_cloudwatch_metric_alarm" "lambda_invocation_error" {
+  alarm_name          = "${data.aws_iam_account_alias.current.account_alias}-lambda-${var.function_name}_Hourly-Invocation-Error"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  namespace           = "AWS/Lambda"
+  metric_name         = "Invocations"
+
+  period              = "3600"
+  statistic           = "Sum"
+  threshold           = "1"
+  datapoints_to_alarm = 1
+
+  dimensions = {
+    FunctionName = var.function_name
+  }
+
+  alarm_description = "Monitors if ${var.function_name} has stopped executing hourly"
+  alarm_actions     = [aws_sns_topic.rds_uptime.arn]
+
+  tags = var.cwma_tags
 }
 
 ## python specific errors
@@ -66,7 +89,7 @@ resource "aws_cloudwatch_log_metric_filter" "lambda_python_error" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_python_error" {
-  alarm_name          = "${data.aws_iam_account_alias.current.account_alias}-lambda-${var.function_name}_python-error"
+  alarm_name          = "${data.aws_iam_account_alias.current.account_alias}-lambda-${var.function_name}_Python-Error"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   namespace           = "LogMetrics"
@@ -83,6 +106,8 @@ resource "aws_cloudwatch_metric_alarm" "lambda_python_error" {
   #   FilterName =
   # }
 
-  alarm_description = "This metric alarm monitors errors in the rds uptime python script"
+  alarm_description = "Monitors if ${var.function_name} contains a python error"
   alarm_actions     = [aws_sns_topic.rds_uptime.arn]
+
+  tags = var.cwma_tags
 }
