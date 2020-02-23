@@ -69,9 +69,7 @@ variable "env_mode_variable" {
 variable "cwma_tags" {
   description = "Tags for the cloud watch metric alarms"
   type        = map(string)
-  default = {
-    test = "test"
-  }
+  default     = {}
 }
 
 variable "lambda_tags" {
