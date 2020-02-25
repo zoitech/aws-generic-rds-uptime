@@ -48,6 +48,8 @@ variable "env_uptime_variables" {
     UPTIME_24x6    = "4-n;4-n;4-n;4-n;4-n;4-20;n-20"
     UPTIME_14x5    = "4-20;4-20;4-20;4-20;4-20;n-20;n-20"
     UPTIME_14x6    = "4-20;4-20;4-20;4-20;4-n;4-20;n-20"
+    UPTIME_16x5    = "3-21;3-21;3-21;3-21;3-21;n-21;n-21"
+    UPTIME_16x6    = "3-21;3-21;3-21;3-21;3-n;3-21;n-21"
     UPTIME_DEFAULT = "n-n;n-n;n-n;n-n;n-n;n-n;n-n"
   }
 }
