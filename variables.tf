@@ -1,3 +1,7 @@
+variable "region" {
+  default = "eu-central-1"
+}
+
 # cloud watch
 variable "enable_schedule" {
   type        = bool
@@ -42,14 +46,12 @@ variable "env_uptime_variables" {
   description = "A map of the required environment variables"
   type        = map(string)
   default = {
-    UPTIME_24x7    = "4-n;4-n;4-n;4-n;4-n;4-n;4-n"
-    UPTIME_0x7     = "n-20;n-20;n-20;n-20;n-20;n-20;n-20"
-    UPTIME_24x5    = "4-n;4-n;4-n;4-n;4-20;n-20;n-20"
-    UPTIME_24x6    = "4-n;4-n;4-n;4-n;4-n;4-20;n-20"
-    UPTIME_14x5    = "4-20;4-20;4-20;4-20;4-20;n-20;n-20"
-    UPTIME_14x6    = "4-20;4-20;4-20;4-20;4-n;4-20;n-20"
-    UPTIME_16x5    = "3-21;3-21;3-21;3-21;3-21;n-21;n-21"
-    UPTIME_16x6    = "3-21;3-21;3-21;3-21;3-n;3-21;n-21"
+    UPTIME_24x7    = "3-n;3-n;3-n;3-n;3-n;3-n;3-n"
+    UPTIME_0x7     = "n-21;n-21;n-21;n-21;n-21;n-21;n-21"
+    UPTIME_24x5    = "3-n;3-n;3-n;3-n;3-21;n-21;n-21"
+    UPTIME_24x6    = "3-n;3-n;3-n;3-n;3-n;3-21;n-21"
+    UPTIME_14x5    = "3-21;3-21;3-21;3-21;3-21;n-21;n-21"
+    UPTIME_14x6    = "3-21;3-21;3-21;3-21;3-n;3-21;n-21"
     UPTIME_DEFAULT = "n-n;n-n;n-n;n-n;n-n;n-n;n-n"
   }
 }
@@ -66,7 +68,6 @@ variable "env_mode_variable" {
   default     = "ENFORCE" #"PERMISSIVE"
 }
 
-
 # Tags
 variable "cwma_tags" {
   description = "Tags for the cloud watch metric alarms"
@@ -82,6 +83,12 @@ variable "lambda_tags" {
 
 variable "sns_tags" {
   description = "Tags for the SNS topic"
+  type        = map(string)
+  default     = {}
+}
+
+variable "iam_role_tags" {
+  description = "Tags for the IAM role"
   type        = map(string)
   default     = {}
 }
