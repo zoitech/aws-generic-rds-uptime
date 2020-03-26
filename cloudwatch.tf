@@ -1,14 +1,13 @@
 # triggering the uptime lambda
-resource "aws_cloudwatch_event_rule" "cron" {
-  count               = local.enable_schedule
+resource "aws_cloudwatch_event_rule" "uptime_lambda" {
   name                = "trigger-lambda-${var.function_name}"
   description         = "Trigger the lambda ${var.function_name}"
   schedule_expression = "cron(${var.schedule})"
+  is_enabled          = local.enable_schedule
 }
 
 resource "aws_cloudwatch_event_target" "uptime_lambda" {
-  count     = local.enable_schedule
-  rule      = aws_cloudwatch_event_rule.cron[0].name
+  rule      = aws_cloudwatch_event_rule.uptime_lambda.name
   target_id = "TriggerLambdaRDSUptimeFunction"
   arn       = aws_lambda_function.uptime.arn
 }
@@ -25,7 +24,7 @@ resource "aws_cloudwatch_log_group" "rds_uptime" {
 # lambda function monitoring/alarms
 ## General lambda execution error
 resource "aws_cloudwatch_metric_alarm" "lambda_execution_error" {
-  alarm_name          = "${data.aws_iam_account_alias.current.account_alias}-lambda-${var.function_name}_Execution-Error"
+  alarm_name          = "${var.account_alias}-lambda-${var.function_name}_Execution-Error"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/Lambda"
@@ -41,22 +40,29 @@ resource "aws_cloudwatch_metric_alarm" "lambda_execution_error" {
   }
 
   alarm_description = "Monitors if ${var.function_name} failed to execute"
-  alarm_actions     = [aws_sns_topic.rds_uptime.arn]
+  alarm_actions     = [aws_sns_topic.alarm_rds_uptime.arn]
 
   tags = var.cwma_tags
 }
 
 ## General lambda invocation error
 resource "aws_cloudwatch_metric_alarm" "lambda_invocation_error" {
-  alarm_name          = "${data.aws_iam_account_alias.current.account_alias}-lambda-${var.function_name}_Hourly-Invocation-Error"
+  alarm_name          = "${var.account_alias}-lambda-${var.function_name}_Hourly-Invocation-Error"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   namespace           = "AWS/Lambda"
   metric_name         = "Invocations"
 
-  period              = "3600"
+  # with breaching 2 additional previous points are referenced before checking
+  # so 3 total = 1hour/3= 20 mins. 
+  # 20 mins = 1200 seconds
+  # additonal 6 minutes for run time. 6/3 = 2 additional minutes per check = 120 seconds
+  # 1200 + 120 = 1320
+  # the check will happen after 3x1320 seconds = 1 hour and 6 mins
+  period              = "1320"
   statistic           = "Sum"
   threshold           = "1"
+  treat_missing_data  = "breaching"
   datapoints_to_alarm = 1
 
   dimensions = {
@@ -64,7 +70,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_invocation_error" {
   }
 
   alarm_description = "Monitors if ${var.function_name} has stopped executing hourly"
-  alarm_actions     = [aws_sns_topic.rds_uptime.arn]
+  alarm_actions     = [aws_sns_topic.alarm_rds_uptime.arn]
 
   tags = var.cwma_tags
 }
@@ -88,7 +94,7 @@ resource "aws_cloudwatch_log_metric_filter" "lambda_python_error" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_python_error" {
-  alarm_name          = "${data.aws_iam_account_alias.current.account_alias}-lambda-${var.function_name}_Python-Error"
+  alarm_name          = "${var.account_alias}-lambda-${var.function_name}_Python-Error"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   namespace           = "LogMetrics"
@@ -106,7 +112,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_python_error" {
   # }
 
   alarm_description = "Monitors if ${var.function_name} contains a python error"
-  alarm_actions     = [aws_sns_topic.rds_uptime.arn]
+  alarm_actions     = [aws_sns_topic.alarm_rds_uptime.arn]
 
   tags = var.cwma_tags
 }

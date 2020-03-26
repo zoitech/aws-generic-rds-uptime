@@ -2,6 +2,9 @@ variable "region" {
   default = "eu-central-1"
 }
 
+variable "account_alias" {
+}
+
 # cloud watch
 variable "enable_schedule" {
   type        = bool
@@ -65,7 +68,7 @@ variable "env_uptime_tag_name_variable" {
 variable "env_mode_variable" {
   description = "Enforce or set lambda to permissive"
   type        = string
-  default     = "ENFORCE" #"PERMISSIVE"
+  default     = "PERMISSIVE" #"ENFORCE"
 }
 
 # Tags

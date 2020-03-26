@@ -1,10 +1,9 @@
 resource "aws_lambda_permission" "allow_cloudwatch" {
-  count         = local.enable_schedule
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.uptime.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.cron[0].arn
+  source_arn    = aws_cloudwatch_event_rule.uptime_lambda.arn
 
 }
 
