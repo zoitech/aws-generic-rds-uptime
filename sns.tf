@@ -1,4 +1,4 @@
-resource "aws_sns_topic" "rds_uptime" {
+resource "aws_sns_topic" "alarm_rds_uptime" {
   name            = local.sns_topic_name_rds_uptime
   delivery_policy = <<EOF
 {

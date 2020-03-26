@@ -16,18 +16,18 @@ The following resources are creating via this module:
 
 ## Usage
 
-The module requires no inputs to run:
-
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/terraform-library/aws-generic-rds-uptime.git"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git"
+  account_alias     = "ak-project-name"
+  region            = "eu-central-1"
 ```
 
-However it is possible to amend most variables such as schedule, names etc if desired:
+It is possible to amend most variables such as schedule, names etc if desired:
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://github.com/zoitech/terraform-aws-rds-uptime.git"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git"
   # cloudwatch
   enable_schedule = true
   schedule = "0 * * * ? *"
@@ -85,7 +85,7 @@ If no valid uptime is configured in the RDS "uptime" tag (does not match the lam
 
 #### Enforce/Permissive Mode
 
-By default the variable "env_mode_variable" is set to "ENFORCE". This can also be set to "PERMISSIVE", which will prevent the lambda function from starting or stopping all RDS instances.
+By default the variable "env_mode_variable" is set to "PERMISSIVE". This can also be set to "ENFORCE". Permissive will prevent the lambda function from starting or stopping all RDS instances.
 
 ### RDS Uptime Tag
 
@@ -114,7 +114,7 @@ Please refer to [CHANGELOG.md](CHANGELOG.md) for the latest release.
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/terraform-library/aws-generic-rds-uptime.git?ref=1.0.0"  
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=1.0.1"  
 }
 ```
 
