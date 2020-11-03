@@ -8,9 +8,7 @@ logger = logging.getLogger()
 
 def load_regions():
     """Returns a list of all regions.
-        Params:
-            -   
-        Returns: list
+        Returns: (list)
     """
     try:
         s = Session()
@@ -38,8 +36,7 @@ def load_rds_instances(region):
                 instances.append(instance)
         return instances
     except:
-        print("[INFO] Couldn't fetch RDS instances in region {region}.".format(
-            region=region), logging.INFO)
+        print("[INFO] Couldn't fetch RDS instances in region {region}.".format(region=region), logging.INFO)
         return []
 
 
@@ -60,8 +57,7 @@ def start_instance(instance, region, mode):
         else:
             res_log(instance_id, "Starting - SKIPPED as not in ENFORCE mode")
     else:
-        res_log(instance_id, "Starting - SKIPPED due to state {state}".format(
-            state=instance["DBInstanceStatus"]))
+        res_log(instance_id, "Starting - SKIPPED due to state {state}".format(tate=instance["DBInstanceStatus"]))
 
 
 def stop_instance(instance, region, mode):
@@ -81,8 +77,7 @@ def stop_instance(instance, region, mode):
         else:
             res_log(instance_id, "Stopping - SKIPPED as not in ENFORCE mode")
     else:
-        res_log(instance_id, "Stopping - SKIPPED due to state {state}".format(
-            state=instance["DBInstanceStatus"]))
+        res_log(instance_id, "Stopping - SKIPPED due to state {state}".format(state=instance["DBInstanceStatus"]))
 
 
 def set_instance_msg(instance, region, message):
@@ -93,8 +88,7 @@ def set_instance_msg(instance, region, message):
             region   (String) : AWS region alias 
             message  (String) : A message to be written
     """
-    set_rds_tag(res_id=instance["DBInstanceArn"],
-                region=region, key="Message", value=message)
+    set_rds_tag(res_id=instance["DBInstanceArn"], region=region, key="Message", value=message)
 
 
 def set_rds_tag(res_id, region, key, value):
@@ -107,8 +101,7 @@ def set_rds_tag(res_id, region, key, value):
     """
     res_log(res_id, "Set {key} to {value}".format(key=key, value=value))
     rds = boto3.client('rds', region)
-    rds.add_tags_to_resource(ResourceName=res_id, Tags=[
-                             {"Key": key, "Value": value}])
+    rds.add_tags_to_resource(ResourceName=res_id, Tags=[{"Key": key, "Value": value}])
 
 
 def get_instance_tags(instance, region):
