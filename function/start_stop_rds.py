@@ -14,12 +14,12 @@ def lambda_handler(event, context):
     mode = os.environ.get('MODE', 'PERMISSIVE')
     regions = aws_rds_helper.load_regions()
     # If regions have been retrieved:
-    if (len(regions) > 0):
+    if len(regions) > 0:
         for region_name in regions:
             # look into each region and retireve RDS database instances
             print("Check region {}".format(region_name))
             rds_instances = aws_rds_helper.load_rds_instances(region_name)
-            if len(rds_instances > 0):
+            if len(rds_instances) > 0:
                 for instance in rds_instances:
                     # Get the DB Identifier
                     instance_id = instance["DBInstanceIdentifier"]
