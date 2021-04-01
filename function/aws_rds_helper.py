@@ -57,7 +57,7 @@ def start_instance(instance, region, mode):
         else:
             res_log(instance_id, "Starting - SKIPPED as not in ENFORCE mode")
     else:
-        res_log(instance_id, "Starting - SKIPPED due to state {state}".format(tate=instance["DBInstanceStatus"]))
+        res_log(instance_id, "Starting - SKIPPED due to state {state}".format(state=instance["DBInstanceStatus"]))
 
 
 def stop_instance(instance, region, mode):
