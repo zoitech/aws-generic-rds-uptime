@@ -40,9 +40,9 @@ def lambda_handler(event, context):
                         if start and not stop:
                             if instance["DBInstanceStatus"] == "stopped":
                                 aws_rds_helper.start_instance(instance, region_name, mode)
-                                aws_helper.set_instance_msg(instance, region_name, "Instance started by uptime Tag")
+                                aws_rds_helper.set_instance_msg(instance, region_name, "Instance started by uptime Tag")
                             else:
-                                aws_helper.res_log(instance_id, "[WARNING] Instance {instance} found in transitional state {state}. Instance won't be started.".format(
+                                aws_rds_helper.res_log(instance_id, "[WARNING] Instance {instance} found in transitional state {state}. Instance won't be started.".format(
                                     instance=instance_id, state=instance["DBInstanceStatus"]), logging.WARNING)
 
                         # Stop the instance
@@ -51,7 +51,7 @@ def lambda_handler(event, context):
                                 aws_rds_helper.stop_instance(instance, region_name, mode)
                                 aws_rds_helper.set_instance_msg(instance, region_name, "Shutdown reason: Planned stop by uptime Tag")
                             else:
-                                aws_helper.res_log(instance_id, "[WARNING] Instance {instance} found in transitional state {state}. Instance won't be stopped.".format(
+                                aws_rds_helper.res_log(instance_id, "[WARNING] Instance {instance} found in transitional state {state}. Instance won't be stopped.".format(
                                     instance=instance_id, state=instance["DBInstanceStatus"]), logging.WARNING)
                         if stop and start:
                             # Invalid behaviour, log it and don't touch the instance.

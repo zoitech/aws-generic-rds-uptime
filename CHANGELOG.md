@@ -1,3 +1,13 @@
+## 1.0.3 
+
+IMPROVEMENTS
+* Fixes the starting behaviour of RDS instances 
+
+## 1.0.2
+
+IMPROVEMENTS
+* Bug fixes
+
 ## 1.0.1
 
 IMPROVEMENTS
