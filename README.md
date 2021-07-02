@@ -18,7 +18,7 @@ The following resources are creating via this module:
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=2.0.0"
   account_alias     = "ak-project-name"
   region            = "eu-central-1"
 ```
@@ -27,7 +27,7 @@ It is possible to amend most variables such as schedule, names etc if desired:
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.gitref=2.0.0"
   # cloudwatch
   enable_schedule = true
   schedule = "0 * * * ? *"
