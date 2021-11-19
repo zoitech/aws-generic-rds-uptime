@@ -1,4 +1,4 @@
-## 3.0.0
+## 3.0.1
 
 HOTFIX: 
 * Changed version constaint to >= for required terraform version.
