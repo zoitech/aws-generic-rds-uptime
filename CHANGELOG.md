@@ -1,4 +1,10 @@
 ## 3.0.0
+
+HOTFIX: 
+* Changed version constaint to >= for required terraform version.
+
+## 3.0.0
+
 ENHANCEMENTS:
 * Upgraded terraform version to 0.14  [#6](https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime/-/issues/6)
 
