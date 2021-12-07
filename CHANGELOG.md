@@ -1,3 +1,10 @@
+## 3.1.0
+ENHANCEMENTS:
+* Upgraded terraform version to 0.15  [#6](https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime/-/issues/7)
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+* Terraform version 0.15.x
+
 ## 3.0.1
 
 HOTFIX: 
