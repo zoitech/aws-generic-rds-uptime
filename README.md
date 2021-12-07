@@ -18,7 +18,7 @@ The following resources are creating via this module:
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=3.0.0"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=3.1.0"
   account_alias     = "ak-project-name"
   region            = "eu-central-1"
 ```
@@ -27,7 +27,7 @@ It is possible to amend most variables such as schedule, names etc if desired:
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.gitref=3.0.0"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.gitref=3.1.0"
   # cloudwatch
   enable_schedule = true
   schedule = "0 * * * ? *"
@@ -120,3 +120,66 @@ module "rds_uptime" {
 
 ## Authors
 Module managed by Graham and Emerson.
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=3.25.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >=3.25.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_cloudwatch_event_rule.uptime_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
+| [aws_cloudwatch_event_target.uptime_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
+| [aws_cloudwatch_log_group.rds_uptime](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_metric_filter.lambda_python_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
+| [aws_cloudwatch_metric_alarm.lambda_execution_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.lambda_invocation_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.lambda_python_error](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_iam_policy.basic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_role.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.basic_exec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.basic_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_lambda_function.uptime](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
+| [aws_lambda_permission.allow_cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
+| [aws_sns_topic.alarm_rds_uptime](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
+| [archive_file.function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_account_alias"></a> [account\_alias](#input\_account\_alias) | n/a | `any` | n/a | yes |
+| <a name="input_cwma_tags"></a> [cwma\_tags](#input\_cwma\_tags) | Tags for the cloud watch metric alarms | `map(string)` | `{}` | no |
+| <a name="input_enable_schedule"></a> [enable\_schedule](#input\_enable\_schedule) | Defines if the function should be scheduled to run. | `bool` | `true` | no |
+| <a name="input_env_mode_variable"></a> [env\_mode\_variable](#input\_env\_mode\_variable) | Enforce or set lambda to permissive | `string` | `"PERMISSIVE"` | no |
+| <a name="input_env_uptime_tag_name_variable"></a> [env\_uptime\_tag\_name\_variable](#input\_env\_uptime\_tag\_name\_variable) | Uptime tag name | `string` | `"uptime"` | no |
+| <a name="input_env_uptime_variables"></a> [env\_uptime\_variables](#input\_env\_uptime\_variables) | A map of the required environment variables | `map(string)` | <pre>{<br>  "UPTIME_0x7": "n-21;n-21;n-21;n-21;n-21;n-21;n-21",<br>  "UPTIME_14x5": "3-21;3-21;3-21;3-21;3-21;n-21;n-21",<br>  "UPTIME_14x6": "3-21;3-21;3-21;3-21;3-n;3-21;n-21",<br>  "UPTIME_24x5": "3-n;3-n;3-n;3-n;3-21;n-21;n-21",<br>  "UPTIME_24x6": "3-n;3-n;3-n;3-n;3-n;3-21;n-21",<br>  "UPTIME_24x7": "3-n;3-n;3-n;3-n;3-n;3-n;3-n",<br>  "UPTIME_DEFAULT": "n-n;n-n;n-n;n-n;n-n;n-n;n-n"<br>}</pre> | no |
+| <a name="input_function_name"></a> [function\_name](#input\_function\_name) | The name of the function | `string` | `"svc-rds-uptime"` | no |
+| <a name="input_function_role_name"></a> [function\_role\_name](#input\_function\_role\_name) | The name of the function role. | `string` | `"lambda-svc-rds-uptime"` | no |
+| <a name="input_iam_role_tags"></a> [iam\_role\_tags](#input\_iam\_role\_tags) | Tags for the IAM role | `map(string)` | `{}` | no |
+| <a name="input_lambda_tags"></a> [lambda\_tags](#input\_lambda\_tags) | Tags for the lambda function | `map(string)` | `{}` | no |
+| <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"eu-central-1"` | no |
+| <a name="input_role_permissions"></a> [role\_permissions](#input\_role\_permissions) | The permissions of the function gets. | `string` | `""` | no |
+| <a name="input_schedule"></a> [schedule](#input\_schedule) | When cloudwatch will trigger the function . | `string` | `"0 * * * ? *"` | no |
+| <a name="input_sns_tags"></a> [sns\_tags](#input\_sns\_tags) | Tags for the SNS topic | `map(string)` | `{}` | no |
+| <a name="input_timeout"></a> [timeout](#input\_timeout) | How long the lambda should run before being stopped in seconds | `string` | `"180"` | no |
+
+## Outputs
+
+No outputs.
