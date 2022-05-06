@@ -27,7 +27,7 @@ It is possible to amend most variables such as schedule, names etc if desired:
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.gitref=3.1.0"
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.gitref=3.2.0"
   # cloudwatch
   enable_schedule = true
   schedule = "0 * * * ? *"
@@ -114,25 +114,26 @@ Please refer to [CHANGELOG.md](CHANGELOG.md) for the latest release.
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=3.0.0"  
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=3.2.0"  
 }
 ```
 
 ## Authors
 Module managed by Graham and Emerson.
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=3.25.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >=3.25.0 |
+| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.69.0 |
 
 ## Modules
 
