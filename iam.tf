@@ -36,7 +36,9 @@ resource "aws_iam_policy" "logging" {
           "Action": [
               "logs:CreateLogGroup",
               "logs:CreateLogStream",
-              "logs:PutLogEvents"
+              "logs:PutLogEvents",
+              "logs:TagResource",
+              "logs:ListTagsForResource"
           ],
           "Resource": "arn:aws:logs:*:*:*",
           "Effect": "Allow"
