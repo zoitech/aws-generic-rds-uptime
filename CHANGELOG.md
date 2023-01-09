@@ -1,3 +1,7 @@
+## 3.3.1
+ENHANCEMENTS:
+* Add TagsForResource permissions (#10)
+
 ## 3.3.0
 ENHANCEMENTS:
 * Upgraded python to version 3.9
