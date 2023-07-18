@@ -1,3 +1,10 @@
+## 3.4.0
+ENHANCEMENTS:
+* Upgraded terraform version to 1.4  [#11](https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime/-/issues/11 )
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+* Terraform version 1.4.x
+
 ## 3.3.1
 ENHANCEMENTS:
 * Add TagsForResource permissions (#10)
@@ -22,7 +29,7 @@ BACKWARDS INCOMPATIBILITIES / NOTES:
 
 ## 3.0.1
 
-HOTFIX: 
+HOTFIX:
 * Changed version constaint to >= for required terraform version.
 
 ## 3.0.0
@@ -49,10 +56,10 @@ ENHANCEMENTS:
 BACKWARDS INCOMPATIBILITIES / NOTES:
 * Terraform version 0.13.x
 
-## 1.0.3 
+## 1.0.3
 
 IMPROVEMENTS
-* Fixes the starting behaviour of RDS instances 
+* Fixes the starting behaviour of RDS instances
 
 ## 1.0.2
 

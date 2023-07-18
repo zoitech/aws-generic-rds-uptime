@@ -68,9 +68,9 @@ The following uptime tag values are defined and evaluated by default via the var
 * UPTIME_14x6    = "4-20;4-20;4-20;4-20;4-n;4-20;n-20"
 * UPTIME_DEFAULT = "n-n;n-n;n-n;n-n;n-n;n-n;n-n"
 
-There are 7 blocks (mo-so) sperated by a ";".  
-The left hand side of the block describes the start time, and the right hand side the stop time.  
-A value of "n" implies the server's start or stop time should not be checked or handled.  
+There are 7 blocks (mo-so) sperated by a ";".
+The left hand side of the block describes the start time, and the right hand side the stop time.
+A value of "n" implies the server's start or stop time should not be checked or handled.
 
 
 Examples:
@@ -114,30 +114,33 @@ Please refer to [CHANGELOG.md](CHANGELOG.md) for the latest release.
 
 ```hcl
 module "rds_uptime" {
-  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=3.3.0"  
+  source = "git::https://git.zoi.de/generic/tf-modules/aws-generic-rds-uptime.git?ref=3.3.0"
 }
 ```
 
 ## Authors
 Module managed by Graham and Emerson.
-
+<!-- BEGIN_AUTOMATED_TF_DOCS_BLOCK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=3.25.0 |
+
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.2.0 |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.69.0 |
+| <a name="provider_archive"></a> [archive](#provider\_archive) | 2.4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.8.0 |
+
 
 ## Modules
 
 No modules.
+
 
 ## Resources
 
@@ -158,8 +161,7 @@ No modules.
 | [aws_lambda_function.uptime](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_permission.allow_cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_sns_topic.alarm_rds_uptime](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
-| [archive_file.function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+
 
 ## Inputs
 
@@ -181,6 +183,8 @@ No modules.
 | <a name="input_sns_tags"></a> [sns\_tags](#input\_sns\_tags) | Tags for the SNS topic | `map(string)` | `{}` | no |
 | <a name="input_timeout"></a> [timeout](#input\_timeout) | How long the lambda should run before being stopped in seconds | `string` | `"180"` | no |
 
+
 ## Outputs
 
 No outputs.
+<!-- END_AUTOMATED_TF_DOCS_BLOCK -->
