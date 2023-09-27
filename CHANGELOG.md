@@ -1,3 +1,7 @@
+## 3.3.2
+ENHANCEMENTS:
+* Upgraded python to version 3.11 (https://git.zoi.de/kaercher/tf-modules/aws-ak-rds-uptime/-/issues/5)
+
 ## 3.3.1
 ENHANCEMENTS:
 * Add TagsForResource permissions (#10)

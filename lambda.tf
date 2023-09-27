@@ -14,7 +14,7 @@ resource "aws_lambda_function" "uptime" {
 
   role    = aws_iam_role.lambda.arn
   handler = "start_stop_rds.lambda_handler"
-  runtime = "python3.9"
+  runtime = "python3.11"
   timeout = var.timeout
 
   environment {
