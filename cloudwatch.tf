@@ -14,7 +14,8 @@ resource "aws_cloudwatch_event_target" "uptime_lambda" {
 
 # log group
 resource "aws_cloudwatch_log_group" "rds_uptime" {
-  name = local.rds_uptime_log_group
+  name              = local.rds_uptime_log_group
+  retention_in_days = var.cloudwatch_log_retention_in_days
 
   tags = {
     creation = "terraform"
