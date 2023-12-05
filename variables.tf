@@ -95,3 +95,9 @@ variable "iam_role_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "cloudwatch_log_retention_in_days" {
+  description = "The number of days you want to retain log events in the specified log group."
+  type        = number
+  default     = 90
+}

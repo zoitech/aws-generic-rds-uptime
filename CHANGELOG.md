@@ -1,3 +1,7 @@
+## 3.4.0
+ENHANCEMENTS:
+* Added CloudWatch retention policy variable and set default retention period as 90 days.
+
 ## 3.3.2
 ENHANCEMENTS:
 * Upgraded python to version 3.11 (https://git.zoi.de/kaercher/tf-modules/aws-ak-rds-uptime/-/issues/5)
