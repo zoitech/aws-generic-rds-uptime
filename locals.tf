@@ -1,7 +1,7 @@
 locals {
   #filename         = replace(replace(var.source_data, "/", "_"), "\\", "_")
   filename         = "rdsuptimefunction"
-  enable_schedule  = (var.enable_schedule == true ? true : false)
+  enable_schedule  = (var.enable_schedule == true ? "ENABLED" : "DISABLED")
   role_permissions = (var.role_permissions == "" ? file("${path.module}/svc_rds_uptime.json") : var.role_permissions)
 
   # cloudwatch
