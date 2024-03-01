@@ -3,7 +3,7 @@ resource "aws_cloudwatch_event_rule" "uptime_lambda" {
   name                = "trigger-lambda-${var.function_name}"
   description         = "Trigger the lambda ${var.function_name}"
   schedule_expression = "cron(${var.schedule})"
-  is_enabled          = local.enable_schedule
+  state               = local.enable_schedule
 }
 
 resource "aws_cloudwatch_event_target" "uptime_lambda" {

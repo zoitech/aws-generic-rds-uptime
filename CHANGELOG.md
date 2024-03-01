@@ -1,3 +1,7 @@
+## 3.4.1
+ENHANCEMENTS:
+* Changing parameter `is_enabled` to `state`.
+
 ## 3.4.0
 ENHANCEMENTS:
 * Added CloudWatch retention policy variable and set default retention period as 90 days.
