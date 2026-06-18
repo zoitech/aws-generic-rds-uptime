@@ -1,3 +1,7 @@
+## 3.5.0
+ENHANCEMENT:
+* Adding variable `enable_rds_uptime_module` to allow disabling the module. Defaults to `true` to maintain backward compatibility.
+
 ## 3.4.1
 ENHANCEMENTS:
 * Changing parameter `is_enabled` to `state`.

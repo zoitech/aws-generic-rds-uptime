@@ -5,6 +5,13 @@ variable "region" {
 variable "account_alias" {
 }
 
+# enable/disable module
+variable "enable_rds_uptime_module" {
+  description = "Enable or disable this module"
+  type        = bool
+  default     = true
+}
+
 # cloud watch
 variable "enable_schedule" {
   type        = bool
