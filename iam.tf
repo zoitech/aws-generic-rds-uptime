@@ -1,5 +1,6 @@
 resource "aws_iam_role" "lambda" {
-  name = var.function_role_name
+  count = local.create_rds_uptime_resources
+  name  = var.function_role_name
 
   assume_role_policy = <<EOF
 {
@@ -19,12 +20,14 @@ EOF
 }
 
 resource "aws_iam_policy" "basic" {
+  count       = local.create_rds_uptime_resources
   name        = "${var.function_role_name}_execution"
   description = "Basic Exec policy"
   policy      = local.role_permissions
 }
 
 resource "aws_iam_policy" "logging" {
+  count       = local.create_rds_uptime_resources
   name        = "${var.function_role_name}_logging"
   description = "Logging policy"
 
@@ -49,11 +52,13 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "basic_exec" {
-  role       = aws_iam_role.lambda.name
-  policy_arn = aws_iam_policy.basic.arn
+  count      = local.create_rds_uptime_resources
+  role       = aws_iam_role.lambda[count.index].name
+  policy_arn = aws_iam_policy.basic[count.index].arn
 }
 
 resource "aws_iam_role_policy_attachment" "basic_logging" {
-  role       = aws_iam_role.lambda.name
-  policy_arn = aws_iam_policy.logging.arn
+  count      = local.create_rds_uptime_resources
+  role       = aws_iam_role.lambda[count.index].name
+  policy_arn = aws_iam_policy.logging[count.index].arn
 }

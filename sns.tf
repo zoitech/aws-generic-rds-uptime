@@ -1,4 +1,5 @@
 resource "aws_sns_topic" "alarm_rds_uptime" {
+  count           = local.create_rds_uptime_resources
   name            = local.sns_topic_name_rds_uptime
   delivery_policy = <<EOF
 {
