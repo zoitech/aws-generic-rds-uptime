@@ -24,7 +24,7 @@ module "rds_uptime" {
 ```
 ### Enable/Disable module
 
-By default, this module is enabled. To disable the creation of all resources within this module, set the variable `enable_ec2_uptime_module` to `false`.
+By default, this module is enabled. To disable the creation of all resources within this module, set the variable `enable_rds_uptime_module` to `false`.
 
 ```hcl
 module "rds_uptime" {
