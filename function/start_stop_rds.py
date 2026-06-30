@@ -17,24 +17,24 @@ def lambda_handler(event, context):
     if len(regions) > 0:
         for region_name in regions:
             # look into each region and retireve RDS database instances
-            print("Check region {}".format(region_name))
+            logger.info("Check region {}".format(region_name))
             rds_instances = aws_rds_helper.load_rds_instances(region_name)
             if len(rds_instances) > 0:
                 for instance in rds_instances:
                     # Get the DB Identifier
                     instance_id = instance["DBInstanceIdentifier"]
-                    aws_rds_helper.res_log(instance_id, "Start check")
+                    logger.info("{}: Start check".format(instance_id))
                     try:
                         # Look for the uptime tag in the instance.
                         uptime = get_uptime_details(instance, region_name)
 
                         # based both on the value of the uptime tag and on the lambda execution time, check if it's required to start the instance
                         start = instance_start_required(uptime)
-                        aws_rds_helper.res_log(instance_id, "Start now: {type}".format(type=str(start)))
+                        logger.info("{}: Start now: {}".format(instance_id, str(start)))
 
                         # based both on the value of the uptime tag and on the lambda execution time, check if it's required to stop the instance
                         stop = instance_stop_required(uptime)
-                        aws_rds_helper.res_log(instance_id, "Stop now: {type}".format(type=str(stop)))
+                        logger.info("{}: Stop now: {}".format(instance_id, str(stop)))
 
                         # Start the instance
                         if start and not stop:
@@ -42,8 +42,8 @@ def lambda_handler(event, context):
                                 aws_rds_helper.start_instance(instance, region_name, mode)
                                 aws_rds_helper.set_instance_msg(instance, region_name, "Instance started by uptime Tag")
                             else:
-                                aws_rds_helper.res_log(instance_id, "[WARNING] Instance {instance} found in transitional state {state}. Instance won't be started.".format(
-                                    instance=instance_id, state=instance["DBInstanceStatus"]), logging.WARNING)
+                                logger.warning("{}: Instance {} found in transitional state {}. Instance won't be started.".format(
+                                    instance_id, instance_id, instance["DBInstanceStatus"]))
 
                         # Stop the instance
                         if stop and not start:
@@ -51,16 +51,16 @@ def lambda_handler(event, context):
                                 aws_rds_helper.stop_instance(instance, region_name, mode)
                                 aws_rds_helper.set_instance_msg(instance, region_name, "Shutdown reason: Planned stop by uptime Tag")
                             else:
-                                aws_rds_helper.res_log(instance_id, "[WARNING] Instance {instance} found in transitional state {state}. Instance won't be stopped.".format(
-                                    instance=instance_id, state=instance["DBInstanceStatus"]), logging.WARNING)
+                                logger.warning("{}: Instance {} found in transitional state {}. Instance won't be stopped.".format(
+                                    instance_id, instance_id, instance["DBInstanceStatus"]))
                         if stop and start:
                             # Invalid behaviour, log it and don't touch the instance.
-                            aws_rds_helper.res_log(instance_id, "[WARNING] Has an invalid behavior, start and stop at the same time should not be the case.", logging.WARNING)
+                            logger.warning("{}: Has an invalid behavior, start and stop at the same time should not be the case.".format(instance_id))
                     except:
-                        aws_rds_helper.res_log(instance_id, "[ERROR] Unexpected error: {error}".format(error=sys.exc_info()[0]), logging.ERROR)
+                        logger.error("{}: Unexpected error: {}".format(instance_id, sys.exc_info()[0]))
     else:
-        aws_rds_helper.res_log("", "[ERROR] Could not retrieve regions. Please check credentials.", logging.ERROR)
-    print("Time: "+str(datetime.datetime.now().time().hour))
+        logger.error("Could not retrieve regions. Please check credentials.")
+    logger.info("Time: "+str(datetime.datetime.now().time().hour))
 
 
 def get_uptime_details(instance, region):
@@ -73,36 +73,33 @@ def get_uptime_details(instance, region):
     instance_id = instance["DBInstanceIdentifier"]
     for tag in rds_instance_tags:
         if tag.get("Key") == "uptime":
-            aws_rds_helper.res_log(instance_id, "Found uptime tag")
+            logger.info("{}: Found uptime tag".format(instance_id))
             has_uptime = True
             uptime_orginal = tag.get("Value")
             # Check if uptime tag is set
             if uptime_orginal != None:
-                aws_rds_helper.res_log(
-                    instance_id, "Has explicit value: {orginal}".format(orginal=uptime_orginal))
+                logger.info("{}: Has explicit value: {}".format(instance_id, uptime_orginal))
                 # Alias, are not allowed to hold ";"
                 if ";" not in uptime_orginal:
-                    aws_rds_helper.res_log(
-                        instance_id, "Looks like an alias, try to get: UPTIME_{orginal}".format(orginal=uptime_orginal))
-                    aws_rds_helper.res_log(
-                        instance_id, "Has explicit value: {orginal}".format(orginal=uptime_orginal))
+                    logger.info("{}: Looks like an alias, try to get: UPTIME_{}".format(instance_id, uptime_orginal))
+                    logger.info("{}: Has explicit value: {}".format(instance_id, uptime_orginal))
                     # try to get from env
                     if ('UPTIME_'+uptime_orginal) in os.environ:
                         uptime_result = os.environ['UPTIME_'+uptime_orginal]
-                        aws_rds_helper.res_log(instance_id, "Found Alias with value: {value}".format(value=uptime_result))
+                        logger.info("{}: Found Alias with value: {}".format(instance_id, uptime_result))
                     else:
-                        aws_rds_helper.res_log(instance_id, "[INFO] No alias found for: {orginal} (use default)".format(orginal=uptime_orginal))
+                        logger.info("{}: No alias found for: {} (use default)".format(instance_id, uptime_orginal))
                 else:
-                    aws_rds_helper.res_log(instance_id, "[INFO] Use explicit value: {orginal}".format(orginal=uptime_orginal))
+                    logger.info("{}: Use explicit value: {}".format(instance_id, uptime_orginal))
                     uptime_result = uptime_orginal
             else:
-                aws_rds_helper.res_log(instance_id, "[INFO] No Tag {tag} found, use default: {default}".format(tag=uptime_tag, default=uptime_default))
+                logger.info("{}: No Tag {} found, use default: {}".format(instance_id, uptime_tag, uptime_default))
     if not has_uptime:
-        aws_rds_helper.res_log(instance_id, "[INFO] No tags found at all, use default: {default}".format(default=uptime_default))
+        logger.info("{}: No tags found at all, use default: {}".format(instance_id, uptime_default))
     # validate value
     re_pattern = re.compile(r'([0-9|n]{1,2}\-[0-9|n]{1,2};?){7}')
     if (re_pattern.match(uptime_result) == None):
-        aws_rds_helper.res_log(instance_id, "[INFO] Uptime looks invalid, reset to default")
+        logger.info("{}: Uptime looks invalid, reset to default".format(instance_id))
         uptime_result = uptime_default
     return transform_uptime(uptime_result)
 

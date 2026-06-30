@@ -15,7 +15,7 @@ def load_regions():
         regions = s.get_available_regions('rds')
         return regions
     except:
-        print("[ERROR] Fetching regions, fallback to empty list.", logging.ERROR)
+        logger.error("Fetching regions, fallback to empty list.")
         return []
 
 
@@ -36,7 +36,7 @@ def load_rds_instances(region):
                 instances.append(instance)
         return instances
     except:
-        print("[INFO] Couldn't fetch RDS instances in region {region}.".format(region=region), logging.INFO)
+        logger.info("Couldn't fetch RDS instances in region %s.", region)
         return []
 
 
@@ -51,13 +51,13 @@ def start_instance(instance, region, mode):
     instance_id = instance["DBInstanceIdentifier"]
     if instance["DBInstanceStatus"] == "stopped":
         if(mode == "ENFORCE"):
-            res_log(instance_id, "Starting")
+            logger.info("{}\tStarting".format(instance_id))
             rds = boto3.client('rds', region)
             rds.start_db_instance(DBInstanceIdentifier=instance_id)
         else:
-            res_log(instance_id, "Starting - SKIPPED as not in ENFORCE mode")
+            logger.info("{}\tStarting - SKIPPED as not in ENFORCE mode".format(instance_id))
     else:
-        res_log(instance_id, "Starting - SKIPPED due to state {state}".format(state=instance["DBInstanceStatus"]))
+        logger.info("{}\tStarting - SKIPPED due to state {state}".format(instance_id, state=instance["DBInstanceStatus"]))
 
 
 def stop_instance(instance, region, mode):
@@ -71,13 +71,13 @@ def stop_instance(instance, region, mode):
     instance_id = instance["DBInstanceIdentifier"]
     if instance["DBInstanceStatus"] == "available":
         if(mode == "ENFORCE"):
-            res_log(instance_id, "Stopping")
+            logger.info("{}\tStopping".format(instance_id))
             rds = boto3.client('rds', region)
             rds.stop_db_instance(DBInstanceIdentifier=instance_id)
         else:
-            res_log(instance_id, "Stopping - SKIPPED as not in ENFORCE mode")
+            logger.info("{}\tStopping - SKIPPED as not in ENFORCE mode".format(instance_id))
     else:
-        res_log(instance_id, "Stopping - SKIPPED due to state {state}".format(state=instance["DBInstanceStatus"]))
+        logger.info("{}\tStopping - SKIPPED due to state {state}".format(instance_id, state=instance["DBInstanceStatus"]))
 
 
 def set_instance_msg(instance, region, message):
@@ -99,7 +99,7 @@ def set_rds_tag(res_id, region, key, value):
             key     (String) : Key name
             message (String) : A message to be written
     """
-    res_log(res_id, "Set {key} to {value}".format(key=key, value=value))
+    logger.info("{}\tSet {key} to {value}".format(res_id, key=key, value=value))
     rds = boto3.client('rds', region)
     rds.add_tags_to_resource(ResourceName=res_id, Tags=[{"Key": key, "Value": value}])
 
@@ -116,13 +116,4 @@ def get_instance_tags(instance, region):
     return rds.list_tags_for_resource(ResourceName=instance["DBInstanceArn"])["TagList"]
 
 
-def res_log(id, message, lvl=logging.INFO):
-    """Log a message with id as prefix.
 
-        Params:     
-            id      (String) : Instance name
-            message (String) : Log message
-            lvl     (Object) : Log level
-    """
-    full_message = "{id}\t{message}".format(id=id, message=message)
-    logger.log(lvl, full_message)
