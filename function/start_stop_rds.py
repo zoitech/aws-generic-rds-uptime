@@ -39,7 +39,16 @@ def lambda_handler(event, context):
                         # Start the instance
                         if start and not stop:
                             if instance["DBInstanceStatus"] == "stopped":
+                                # --- LOGGING FOR TIMEOUT TROUBLESHOOTING ---
+                                logger.info("{}: Initiating aws_rds_helper.start_instance(). Waiting for AWS API response...".format(instance_id))
+                                api_start_time = datetime.datetime.utcnow()
+
                                 aws_rds_helper.start_instance(instance, region_name, mode)
+
+                                api_end_time = datetime.datetime.utcnow()
+                                duration = (api_end_time - api_start_time).total_seconds()
+                                logger.info("{}: aws_rds_helper.start_instance() completed successfully in {} seconds.".format(instance_id, duration))
+                                # --------------------------------------------
                                 aws_rds_helper.set_instance_msg(instance, region_name, "Instance started by uptime Tag")
                             else:
                                 logger.warning("{}: Instance {} found in transitional state {}. Instance won't be started.".format(
@@ -48,7 +57,16 @@ def lambda_handler(event, context):
                         # Stop the instance
                         if stop and not start:
                             if instance["DBInstanceStatus"] == "available":
+                                # --- LOGGING FOR TIMEOUT TROUBLESHOOTING ---
+                                logger.info("{}: Initiating aws_rds_helper.stop_instance(). Waiting for AWS API response...".format(instance_id))
+                                api_start_time = datetime.datetime.utcnow()
+
                                 aws_rds_helper.stop_instance(instance, region_name, mode)
+
+                                api_end_time = datetime.datetime.utcnow()
+                                duration = (api_end_time - api_start_time).total_seconds()
+                                logger.info("{}: aws_rds_helper.stop_instance() completed successfully in {} seconds.".format(instance_id, duration))
+                                # --------------------------------------------
                                 aws_rds_helper.set_instance_msg(instance, region_name, "Shutdown reason: Planned stop by uptime Tag")
                             else:
                                 logger.warning("{}: Instance {} found in transitional state {}. Instance won't be stopped.".format(
