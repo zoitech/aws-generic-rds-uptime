@@ -1,3 +1,10 @@
+## 3.6.0
+ENHANCEMENTS:
+* Switch Lambda logging to JSON format via `logging_config` block
+* Replace `print` statements with `logger` calls in Python function code
+BACKWARDS INCOMPATIBILITIES / NOTES:
+* Minimum AWS provider version is now `>= 5.32.0` (required for `logging_config` support)
+
 ## 3.5.0
 ENHANCEMENT:
 * Adding variable `enable_rds_uptime_module` to allow disabling the module. Defaults to `true` to maintain backward compatibility.
